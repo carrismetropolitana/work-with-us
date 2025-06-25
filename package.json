@@ -1,0 +1,26 @@
+{
+	"name": "@tmlmobilidade/test",
+	"private": true,
+	"scripts": {
+		"build": "turbo build",
+		"clean": "sh cleanup.sh",
+		"dev": "dotenv-run -f .env -- turbo dev",
+		"lint": "turbo lint",
+		"start": "turbo start"
+	},
+	"devDependencies": {
+		"@carrismetropolitana/eslint": "20250622.1204.50",
+		"@tmlmobilidade/tsconfig": "20250625.1612.48",
+		"dotenv-cli": "8.0.0",
+		"prettier": "3.5.3",
+		"turbo": "2.4.4",
+		"typescript": "5.8.2"
+	},
+	"packageManager": "npm@11.2.0",
+	"engines": {
+		"node": ">=18"
+	},
+	"workspaces": [
+		"apps/*"
+	]
+}

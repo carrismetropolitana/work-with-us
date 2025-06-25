@@ -1,0 +1,22 @@
+# # #
+
+name: tmlmobilidade-test
+
+services:
+
+  appdb:
+    image: mongo
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 30s
+    logging:
+      options:
+        max-size: '1m'
+        max-file: '1'
+    ports:
+      - 37001:27017
+    environment:
+      - MONGO_INITDB_DATABASE=production
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root

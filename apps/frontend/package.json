@@ -1,0 +1,32 @@
+{
+	"name": "@tmlmobilidade/test-frontend",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"build": "next build",
+		"dev": "next dev -p 49025",
+		"lint": "eslint . && tsc --noEmit",
+		"lint:fix": "eslint --fix ./src",
+		"start": "next start"
+	},
+	"dependencies": {
+		"@tabler/icons-react": "3.31.0",
+		"@tmlmobilidade/lib": "20250625.1612.48",
+		"@tmlmobilidade/types": "20250625.1612.48",
+		"@tmlmobilidade/ui": "20250625.1612.48",
+		"@tmlmobilidade/utils": "20250625.1612.48",
+		"clsx": "2.1.1",
+		"next": "15.2.4",
+		"react": "19.0.0",
+		"react-dom": "19.0.0",
+		"swr": "^2.3.3"
+	},
+	"devDependencies": {
+		"@carrismetropolitana/eslint": "20250622.1204.50",
+		"@tmlmobilidade/tsconfig": "20250625.1612.48",
+		"@types/node": "22",
+		"@types/react": "19",
+		"@types/react-dom": "19",
+		"typescript": "5"
+	}
+}
