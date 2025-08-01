@@ -1,0 +1,32 @@
+.card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--color-system-text-300);
+  background-color: var(--color-system-background-100);
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.card:hover {
+  background-color: var(--color-system-background-300);
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.actions {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.arrow {
+  font-size: 1.5rem;
+  color: var(--color-muted);
+}
