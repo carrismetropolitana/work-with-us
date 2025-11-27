@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 'use client';
 
 import { Button } from '@tmlmobilidade/ui';
@@ -10,3 +11,14 @@ export default function Page() {
 		</div>
 	);
 }
+=======
+import LineList from '../components/LineList';
+
+export default function Home() {
+  return (
+    <main className="container mx-auto px-4 py-8">
+      <LineList />
+    </main>
+  );
+}
+>>>>>>> feat/lines-favorites

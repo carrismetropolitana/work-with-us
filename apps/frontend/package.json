@@ -16,6 +16,10 @@
 		"@tmlmobilidade/ui": "20250625.1612.48",
 		"@tmlmobilidade/utils": "20250625.1612.48",
 		"clsx": "2.1.1",
+<<<<<<< HEAD
+=======
+		"lucide-react": "^0.554.0",
+>>>>>>> feat/lines-favorites
 		"next": "15.2.4",
 		"react": "19.0.0",
 		"react-dom": "19.0.0",

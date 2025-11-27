@@ -1,9 +1,15 @@
+<<<<<<< HEAD
 # # #
 
 name: tmlmobilidade-test
 
 services:
 
+=======
+name: tmlmobilidade-test
+
+services:
+>>>>>>> feat/lines-favorites
   appdb:
     image: mongo
     deploy:
