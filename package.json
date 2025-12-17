@@ -22,5 +22,8 @@
 	},
 	"workspaces": [
 		"apps/*"
-	]
+	],
+	"dependencies": {
+		"mongoose": "^9.0.1"
+	}
 }

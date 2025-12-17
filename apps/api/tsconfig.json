@@ -1,11 +1,15 @@
 {
-	"extends": "@tmlmobilidade/tsconfig/nodejs.json",
-	"compilerOptions": {
-		"outDir": "./dist",
-		"paths": {
-			"@/*": ["./src/*"]
-		},
-		"rootDir": "./src"
-	},
-	"include": ["src/**/*.ts"]
+  "extends": "@tmlmobilidade/tsconfig/nodejs.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "moduleResolution": "nodenext",
+    "esModuleInterop": true,
+    "resolveJsonModule": true
+  },
+  "include": ["src/**/*.ts"]
 }
+
