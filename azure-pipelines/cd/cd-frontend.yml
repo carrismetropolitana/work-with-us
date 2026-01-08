@@ -1,0 +1,69 @@
+trigger: none
+
+pr: none
+
+resources:
+  pipelines:
+    - pipeline: ci-frontend
+      source: 'CI-Frontend-Build'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - name: acrName
+    value: 'acrminiappnonprod'
+  - name: imageName
+    value: 'miniapp-frontend'
+  - name: azureServiceConnection
+    value: 'Azure-ServiceConnection'
+
+stages:
+  - stage: DeployDev
+    displayName: 'Deploy'
+    jobs:
+      - deployment: Deploy
+        displayName: 'Deploy Frontend'
+        environment: 'dev'
+        variables:
+          - name: webAppName
+            value: 'app-miniapp-frontend-dev'
+          - name: resourceGroup
+            value: 'rg-miniapp-dev'
+
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureRmWebAppDeployment@4
+                  displayName: 'Deploy App Service'
+                  inputs:
+                    azureSubscription: $(azureServiceConnection)
+                    appType: webAppContainer
+                    WebAppName: $(webAppName)
+                    DockerNamespace: '$(acrName).azurecr.io/'
+                    DockerRepository: 'miniapp'
+                    DockerImageTag: '$(Build.BuildId)'
+                    AppSettings: |
+                      [
+                          {
+                            "name": "NODE_ENV",
+                            "value": "development",
+                            "slotSetting": false
+                          },
+                          {
+                            "name": "WEBSITES_PORT",
+                            "value": "3000",
+                            "slotSetting": false
+                          },
+                          {
+                            "name": "API_URL",
+                            "value": "$(apiUrl)",
+                            "slotSetting": false
+                          },
+                          {
+                            "name": "NEXT_TELEMETRY_DISABLED",
+                            "value": "1",
+                            "slotSetting": false
+                          }
+                        ]

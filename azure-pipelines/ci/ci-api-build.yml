@@ -1,0 +1,126 @@
+trigger: none
+
+pr: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - name: workingDirectory
+    value: '$(Build.SourcesDirectory)/apps/api'
+  - name: nodeVersion
+    value: '18.x'
+  - name: projectKey
+    value: 'miniapp-api'
+  - name: projectName
+    value: 'Mini App - API'
+  - name: acrName
+    value: 'acrminiappnonprod'
+  - name: imageName
+    value: 'miniapp-api'
+
+stages:
+  - stage: Build
+    displayName: 'Build & Test'
+    jobs:
+      - job: BuildJob
+        displayName: 'Build API'
+        steps:
+          - checkout: self
+
+          - task: NodeTool@0
+            displayName: 'Install Node.js'
+            inputs:
+              versionSpec: $(nodeVersion)
+
+          - script: |
+              cd $(workingDirectory)
+              npm ci
+            displayName: 'Install Dependencies'
+
+          - script: |
+              cd $(workingDirectory)
+              npm run lint
+            displayName: 'Run Lint'
+            continueOnError: true
+
+          - script: |
+              cd $(workingDirectory)
+              npm run build
+            displayName: 'Build Application'
+
+          # unit tests se existirem
+          - script: |
+              cd $(workingDirectory)
+              npm test -- --coverage --ci || true
+            displayName: 'Run Unit Tests'
+            continueOnError: true
+
+          - task: PublishTestResults@2
+            displayName: 'Publish Test Results'
+            inputs:
+              testResultsFormat: 'JUnit'
+              testResultsFiles: '**/junit.xml'
+              testRunTitle: 'API Unit Tests'
+              failTaskOnFailedTests: false
+
+          - task: PublishCodeCoverageResults@1
+            displayName: 'Publish Code Coverage'
+            inputs:
+              codeCoverageTool: 'Cobertura'
+              summaryFileLocation: '$(workingDirectory)/coverage/coverage.xml'
+              failIfCoverageEmpty: false
+
+  - stage: SecurityScan
+    displayName: 'Security Scanning'
+    dependsOn: Build
+    jobs:
+      - job: SonarQube
+        displayName: 'SonarQube Analysis'
+        steps:
+          - checkout: self
+
+          - task: NodeTool@0
+            displayName: 'Install Node.js'
+            inputs:
+              versionSpec: $(nodeVersion)
+
+          - script: |
+              cd $(workingDirectory)
+              npm ci
+            displayName: 'Install Dependencies'
+
+          - template: ../templates/sonarqube.yml
+            parameters:
+              projectKey: $(projectKey)
+              projectName: $(projectName)
+              sources: 'src'
+              sonarQubeServiceConnection: 'SonarQube'
+
+      - job: DependencyCheck
+        displayName: 'OWASP Dependency Check'
+        steps:
+          - checkout: self
+
+          - template: ../templates/dependency-check.yml
+            parameters:
+              projectName: $(projectName)
+              scanPath: '$(workingDirectory)'
+
+  - stage: DockerBuild
+    displayName: 'Docker Build & Push'
+    dependsOn: SecurityScan
+    jobs:
+      - job: Docker
+        displayName: 'Build & Push Docker Image'
+        steps:
+          - checkout: self
+
+          - template: ../templates/docker-build.yml
+            parameters:
+              dockerfilePath: '$(Build.SourcesDirectory)/apps/api/Dockerfile'
+              imageName: $(imageName)
+              imageTag: '$(Build.BuildId)'
+              acrServiceConnection: 'ACR-NonProd'
+              acrName: $(acrName)
+              buildContext: '$(Build.SourcesDirectory)'

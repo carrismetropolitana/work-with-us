@@ -1,0 +1,65 @@
+name: tmlmobilidade-local
+
+services:
+  mongodb:
+    image: mongo:7.0.28-jammy
+    container_name: miniapp-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - miniapp-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ../../
+      dockerfile: apps/api/Dockerfile
+    container_name: miniapp-api
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      PORT: 3000
+      MONGODB_URI: mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongodb:27017/${MONGO_DATABASE}?authSource=admin
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - miniapp-network
+
+  frontend:
+    build:
+      context: ../../
+      dockerfile: apps/frontend/Dockerfile
+    container_name: miniapp-frontend
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      PORT: 3000
+      API_URL: http://api:3000
+      NEXT_TELEMETRY_DISABLED: 1
+    networks:
+      - miniapp-network
+
+networks:
+  miniapp-network:
+    driver: bridge
+    name: miniapp-network
+
+volumes:
+  mongodb_data:
+    name: miniapp-mongodb-data

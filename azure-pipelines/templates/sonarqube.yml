@@ -1,0 +1,30 @@
+parameters:
+  - name: projectKey
+    type: string
+  - name: projectName
+    type: string
+  - name: sources
+    type: string
+    default: 'src'
+  - name: sonarQubeServiceConnection
+    type: string
+    default: 'SonarQube'
+
+steps:
+  - task: SonarQubePrepare@5
+    displayName: 'Prepare SonarQube Analysis'
+    inputs:
+      SonarQube: ${{ parameters.sonarQubeServiceConnection }}
+      scannerMode: 'CLI'
+      configMode: 'manual'
+      cliProjectKey: ${{ parameters.projectKey }}
+      cliProjectName: ${{ parameters.projectName }}
+      cliSources: ${{ parameters.sources }}
+
+  - task: SonarQubeAnalyze@5
+    displayName: 'Run SonarQube Analysis'
+
+  - task: SonarQubePublish@5
+    displayName: 'Publish SonarQube Results'
+    inputs:
+      pollingTimeoutSec: '300'

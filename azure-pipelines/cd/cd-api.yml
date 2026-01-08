@@ -1,0 +1,58 @@
+trigger: none
+
+pr: none
+
+resources:
+  pipelines:
+    - pipeline: ci-api
+      source: 'CI-API-Build'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - name: acrName
+    value: 'acrminiappnonprod'
+  - name: imageName
+    value: 'miniapp-api'
+  - name: azureServiceConnection
+    value: 'Azure-ServiceConnection'
+
+stages:
+  - stage: DeployDev
+    displayName: 'Deploy dev'
+    jobs:
+      - deployment: DeployDevJob
+        displayName: 'Deploy API'
+        environment: 'dev'
+        variables:
+          - name: webAppName
+            value: 'app-miniapp-api-dev'
+          - name: resourceGroup
+            value: 'rg-miniapp-dev'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureRmWebAppDeployment@4
+                  displayName: 'Deploy App Service'
+                  inputs:
+                    azureSubscription: $(azureServiceConnection)
+                    appType: webAppContainer
+                    WebAppName: $(webAppName)
+                    DockerNamespace: '$(acrName).azurecr.io/'
+                    DockerRepository: 'miniapp'
+                    DockerImageTag: '$(Build.BuildId)'
+                    AppSettings: |
+                      [
+                        {
+                          "name": "NODE_ENV",
+                          "value": "development",
+                          "slotSetting": false
+                        },
+                        {
+                          "name": "WEBSITES_PORT",
+                          "value": "3000",
+                          "slotSetting": false
+                        }
+                      ]

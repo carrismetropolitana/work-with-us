@@ -1,0 +1,26 @@
+parameters:
+  - name: dockerfilePath
+    type: string
+  - name: imageName
+    type: string
+  - name: imageTag
+    type: string
+    default: '$(Build.BuildId)'
+  - name: acrServiceConnection
+    type: string
+  - name: acrName
+    type: string
+  - name: buildContext
+    type: string
+    default: '$(Build.SourcesDirectory)'
+
+steps:
+  - task: Docker@2
+    displayName: 'Build Docker Image'
+    inputs:
+      containerRegistry: '${{parameters.acrServiceConnection}}'
+      repository: 'miniapp'
+      command: 'buildAndPush'
+      Dockerfile: ${{ parameters.dockerfilePath }}
+      tags: ${{ parameters.imageTag }}
+      buildContext: ${{ parameters.buildContext }}

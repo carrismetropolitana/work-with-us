@@ -1,0 +1,129 @@
+trigger: none
+
+pr: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+parameters:
+  - name: environment
+    displayName: 'Environment'
+    type: string
+    default: 'dev'
+    values:
+      - shared-nonprod
+      - dev
+      - staging
+      - prod
+
+  - name: action
+    displayName: 'Terraform Action'
+    type: string
+    default: 'plan'
+    values:
+      - plan
+      - apply
+
+variables:
+  - name: terraformVersion
+    value: '1.14.3'
+  - name: workingDirectory
+    value: '$(Build.SourcesDirectory)/infra/azure/terraform/live/${{ parameters.environment }}'
+  - name: azureServiceConnection
+    value: 'Azure-ServiceConnection'
+
+stages:
+  - stage: TerraformPlan
+    displayName: 'Terraform Plan'
+    jobs:
+      - job: PlanJob
+        displayName: 'Create terraform plan'
+        steps:
+          - checkout: self
+            clean: true
+
+          - task: TerraformInstaller@1
+            displayName: 'Install Terraform'
+            inputs:
+              terraformVersion: $(terraformVersion)
+
+          - task: TerraformTaskV4@4
+            displayName: 'Terraform Init'
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              workingDirectory: $(workingDirectory)
+              backendServiceArm: $(azureServiceConnection)
+              backendAzureRmResourceGroupName: 'rg-terraform-state'
+              backendAzureRmStorageAccountName: 'stterraformstate'
+              backendAzureRmContainerName: 'tfstate'
+              backendAzureRmKey: '${{ parameters.environment }}.tfstate'
+
+          - task: TerraformTaskV4@4
+            displayName: 'Terraform Validate'
+            inputs:
+              provider: 'azurerm'
+              command: 'validate'
+              workingDirectory: $(workingDirectory)
+            env:
+              TF_VAR_location: 'eastus'
+              TF_VAR_service_plan_sku_name: 'B1'
+
+          - task: TerraformTaskV4@4
+            displayName: 'Terraform Plan'
+            inputs:
+              provider: 'azurerm'
+              command: 'plan'
+              workingDirectory: $(workingDirectory)
+              environmentServiceNameAzureRM: $(azureServiceConnection)
+              commandOptions: '-out=tfplan'
+            env:
+              TF_VAR_location: 'eastus'
+              TF_VAR_service_plan_sku_name: 'B1'
+
+          - task: PublishPipelineArtifact@1
+            displayName: 'Publish Terraform Plan'
+            inputs:
+              targetPath: '$(workingDirectory)/tfplan'
+              artifact: 'terraform-plan-${{ parameters.environment }}'
+              publishLocation: 'pipeline'
+
+  - stage: TerraformApply
+    displayName: 'Terraform Apply'
+    dependsOn: TerraformPlan
+    condition: and(succeeded(), eq('${{ parameters.action }}', 'apply'))
+    jobs:
+      - deployment: Apply
+        displayName: 'Terraform apply'
+        environment: '${{ parameters.environment }}'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+
+                - task: TerraformInstaller@0
+                  displayName: 'Install Terraform'
+                  inputs:
+                    terraformVersion: $(terraformVersion)
+
+                - task: TerraformTaskV4@4
+                  displayName: 'Terraform Init'
+                  inputs:
+                    provider: 'azurerm'
+                    command: 'init'
+                    workingDirectory: $(workingDirectory)
+                    backendServiceArm: $(azureServiceConnection)
+                    backendAzureRmResourceGroupName: 'rg-terraform-state'
+                    backendAzureRmStorageAccountName: 'stterraformstate'
+                    backendAzureRmContainerName: 'tfstate'
+                    backendAzureRmKey: '${{ parameters.environment }}.tfstate'
+
+                - task: TerraformTaskV4@4
+                  displayName: 'Terraform Apply'
+                  inputs:
+                    provider: 'azurerm'
+                    command: 'apply'
+                    workingDirectory: $(workingDirectory)
+                    environmentServiceNameAzureRM: $(azureServiceConnection)
+                    commandOptions: 'tfplan'

@@ -1,0 +1,35 @@
+parameters:
+  - name: projectName
+    type: string
+  - name: scanPath
+    type: string
+    default: '.'
+
+steps:
+  - task: dependency-check-build-task@6
+    displayName: 'OWASP Dependency Check'
+    inputs:
+      projectName: ${{ parameters.projectName }}
+      scanPath: ${{ parameters.scanPath }}
+      format: 'HTML,JSON,JUNIT'
+      warnOnCVSSViolation: true
+      enableExperimental: true
+      enableRetired: true
+    continueOnError: true
+
+  - task: PublishTestResults@2
+    displayName: 'Publish Dependency Check Results'
+    condition: always()
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: '**/dependency-check-junit.xml'
+      testRunTitle: 'Dependency Check - ${{ parameters.projectName }}'
+      failTaskOnFailedTests: false
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Dependency Check Report'
+    condition: always()
+    inputs:
+      PathtoPublish: '$(Build.SourcesDirectory)/dependency-check-report.html'
+      ArtifactName: 'dependency-check-${{ parameters.projectName }}'
+      publishLocation: 'Container'
