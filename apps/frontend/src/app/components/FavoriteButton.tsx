@@ -2,7 +2,7 @@
 
 import { IconHeart, IconHeartFilled } from '@tabler/icons-react';
 import { Button } from '@tmlmobilidade/ui';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 /* * */
 
@@ -25,6 +25,11 @@ export function FavoriteButton({ lineId, isFavorite, onToggle }: FavoriteButtonP
     const [isLoading, setIsLoading] = useState(false);
     const [localIsFavorite, setLocalIsFavorite] = useState(isFavorite);
 
+    // Sync local state with prop (e.g. when SWR updates)
+    useEffect(() => {
+        setLocalIsFavorite(isFavorite);
+    }, [isFavorite]);
+
     const handleClick = async () => {
         // Optimistic update
         const previousState = localIsFavorite;
@@ -43,12 +48,14 @@ export function FavoriteButton({ lineId, isFavorite, onToggle }: FavoriteButtonP
     };
 
     return (
-        <Button
-            icon={localIsFavorite ? <IconHeartFilled size={18} /> : <IconHeart size={18} />}
-            onClick={handleClick}
-            disabled={isLoading}
-            label={localIsFavorite ? 'Remover' : 'Adicionar'}
-            variant={localIsFavorite ? 'danger' : 'secondary'}
-        />
+        <div onClick={(e) => e.stopPropagation()}>
+            <Button
+                icon={localIsFavorite ? <IconHeartFilled size={18} /> : <IconHeart size={18} />}
+                onClick={handleClick}
+                disabled={isLoading}
+                label={localIsFavorite ? 'Remover' : 'Adicionar'}
+                variant={localIsFavorite ? 'danger' : 'secondary'}
+            />
+        </div>
     );
 }

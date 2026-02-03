@@ -32,7 +32,8 @@ async function start() {
         // Register plugins
         await fastify.register(cors, {
             origin: process.env.FRONTEND_URL || 'http://localhost:49025',
-            credentials: true
+            credentials: true,
+            methods: ['GET', 'POST', 'PUT', 'DELETE']
         });
 
         await fastify.register(cookie);
