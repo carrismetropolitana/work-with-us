@@ -22,6 +22,11 @@ export default function Page() {
 	const handleToggleFavorite = async (line_id: string) => {
 		try {
 			if (favoriteIds.has(line_id)) {
+				// Atualizar UI otimisticamente
+				mutate(
+					favorites?.filter(f => f.line_id !== line_id),
+					false,
+				);
 				await removeFavorite(line_id);
 			}
 			else {
@@ -33,6 +38,8 @@ export default function Page() {
 		catch (error) {
 			console.error('Erro ao toggle favorito:', error);
 			alert('Erro ao atualizar favorito. Tente novamente.');
+			// Reverter mudança otimista em caso de erro
+			mutate();
 		}
 	};
 

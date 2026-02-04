@@ -27,6 +27,7 @@ const app = Fastify({
 // Register plugins
 await app.register(cors, {
 	credentials: true,
+	methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 	origin: true,
 });
 
