@@ -5,6 +5,8 @@ import cors from '@fastify/cors';
 import Fastify from 'fastify';
 import mongoose from 'mongoose';
 
+import { favoritesRoutes } from './routes/favorites.js';
+
 /* * */
 
 const app = Fastify({
@@ -36,6 +38,11 @@ await app.register(cookie);
 app.get('/health', async () => {
 	return { status: 'ok', timestamp: new Date().toISOString() };
 });
+
+/* * */
+
+// Register routes
+await app.register(favoritesRoutes);
 
 /* * */
 
