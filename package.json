@@ -22,5 +22,8 @@
 	},
 	"workspaces": [
 		"apps/*"
-	]
+	],
+	"dependencies": {
+		"@tmlmobilidade/utils": "^20260204.1159.43"
+	}
 }
