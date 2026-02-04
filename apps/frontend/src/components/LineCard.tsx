@@ -19,7 +19,7 @@ interface LineCardProps {
 
 export function LineCard({ isFavorite, line, onToggleFavorite }: LineCardProps) {
 	const handleCardClick = () => {
-		window.open(`https://www.carrismetropolitana.pt/linhas/${line.id}`, '_blank');
+		window.open(`https://www.carrismetropolitana.pt/lines/${line.id}`, '_blank');
 	};
 
 	const handleFavoriteClick = (e: React.MouseEvent) => {
