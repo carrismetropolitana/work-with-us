@@ -6,10 +6,7 @@ services:
 
   appdb:
     image: mongo
-    deploy:
-      restart_policy:
-        condition: any
-        delay: 30s
+    restart: unless-stopped
     logging:
       options:
         max-size: '1m'
