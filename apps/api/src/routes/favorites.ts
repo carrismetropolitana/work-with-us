@@ -1,5 +1,6 @@
 /* * */
 
+import { Dates } from '@tmlmobilidade/utils';
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 
 import { Favorite } from '../models/Favorite.js';
@@ -47,10 +48,10 @@ export async function favoritesRoutes(app: FastifyInstance) {
 			}
 
 			// Criar favorito com datas usando @tmlmobilidade/utils
-			const now = new Date();
+			const datesNow = Dates.now('Europe/Lisbon');
 			const favorite = await Favorite.create({
-				created_at_operational_date: now.toISOString().split('T')[0], // YYYY-MM-DD
-				created_at_unix: Math.floor(now.getTime() / 1000),
+				created_at_operational_date: datesNow.operational_date,
+				created_at_unix: Math.floor(datesNow.unix_timestamp / 1000),
 				line_id,
 			});
 
