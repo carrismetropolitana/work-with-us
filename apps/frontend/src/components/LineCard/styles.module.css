@@ -1,0 +1,42 @@
+.card {
+	display: flex;
+	flex-direction: column;
+	border-radius: var(--mantine-radius-md);
+	background: var(--mantine-color-dark-7, var(--mantine-color-gray-0));
+	border: 1px solid var(--mantine-color-dark-5, var(--mantine-color-gray-2));
+	overflow: hidden;
+}
+
+.colorBar {
+	height: 3px;
+	width: 100%;
+}
+
+.body {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 14px 16px 10px;
+	flex: 1;
+}
+
+.footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 16px 12px;
+	margin-top: auto;
+}
+
+.siteLink {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	font-size: 11px;
+	color: var(--mantine-color-dimmed);
+	text-decoration: none;
+}
+
+.siteLink:hover {
+	color: var(--mantine-color-text);
+}
