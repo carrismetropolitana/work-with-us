@@ -1,0 +1,5 @@
+# Ignore Docker and Compose folders
+docker/
+compose/
+
+node_modules/
