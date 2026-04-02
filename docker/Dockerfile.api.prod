@@ -1,0 +1,31 @@
+#Build
+FROM node:24.14.0-alpine AS builder
+
+WORKDIR /app
+
+RUN corepack enable
+
+COPY . .
+
+RUN npm install
+
+RUN npm run build --filter=api...
+
+#Prod API
+FROM node:24.14.0-alpine AS prod
+
+WORKDIR /app
+
+RUN corepack enable
+
+COPY package*.json turbo.json ./
+RUN npm install --omit=dev
+
+COPY --from=builder /app/apps/api /app/apps/api
+
+ENV NODE_ENV=production
+ENV PORT=3001
+
+EXPOSE 3001
+
+CMD ["node", "apps/api/dist/index.js"]

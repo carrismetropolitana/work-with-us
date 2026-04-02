@@ -1,0 +1,27 @@
+#Build
+FROM node:24.14.0-alpine AS builder
+
+WORKDIR /app
+
+RUN corepack enable
+
+COPY . .
+
+RUN npm install
+
+RUN npm run build --filter=frontend...
+
+FROM node:24.14.0-alpine AS prod
+
+WORKDIR /app/apps/frontend
+RUN corepack enable
+
+COPY --from=builder /app/apps/frontend/ ./
+
+RUN npm install --omit=dev
+
+ENV NODE_ENV=production
+ENV PORT=3000
+EXPOSE 3000
+
+CMD ["npm", "start"]

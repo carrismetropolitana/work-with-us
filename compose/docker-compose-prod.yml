@@ -1,0 +1,41 @@
+# # #
+
+name: tmlmobilidade
+
+services:
+  appdb:
+    container_name: appdb
+    image: mongo
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 30s
+    logging:
+      options:
+        max-size: '1m'
+        max-file: '1'
+    ports:
+      - 37001:27017
+    environment:
+      - MONGO_INITDB_DATABASE=production
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+  appfrontend:
+    container_name: appfrontend
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile.frontend.prod
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+  appapi:
+    container_name: appapi
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile.api.prod
+    ports:
+      - "3001:3001"
+    restart: unless-stopped
+  
+    
+  
