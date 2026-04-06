@@ -15,11 +15,11 @@ services:
         max-size: '1m'
         max-file: '1'
     ports:
-      - 37001:27017
+      - 37001:27017 
     environment:
-      - MONGO_INITDB_DATABASE=production
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=root
+      - MONGO_INITDB_DATABASE=development
+      - MONGO_INITDB_ROOT_USERNAME=root   #Num contexto real isto estaria num secret file
+      - MONGO_INITDB_ROOT_PASSWORD=root   #Num contexto real isto estaria num secret file
   appfrontend:
     container_name: appfrontend_dev
     build:
@@ -28,10 +28,14 @@ services:
       target: dev
     ports:
       - "49025:49025"
+      - "3001:3001"
     volumes:
       - ../apps:/app/apps
       - ../package.json:/app/package.json
       - ../turbo.json:/app/turbo.json
     environment:
       - CHOKIDAR_USEPOLLING=true
+      - MONGO_URI=mongodb://root:root@appdb_dev:27017
+      - MONGO_INITDB_DATABASE=development
+      - NEXT_PUBLIC_API_URL=http://localhost:3001/api
   

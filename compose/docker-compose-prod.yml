@@ -25,6 +25,8 @@ services:
     build:
       context: ../
       dockerfile: docker/Dockerfile.frontend.prod
+    environment:
+      - NEXT_PUBLIC_API_URL=http://appapi:3001/api
     ports:
       - "3000:3000"
     restart: unless-stopped
@@ -35,6 +37,9 @@ services:
       dockerfile: docker/Dockerfile.api.prod
     ports:
       - "3001:3001"
+    environment:
+      - MONGO_URI=mongodb://root:root@appdb:27017
+      - MONGO_INITDB_DATABASE=production
     restart: unless-stopped
   
     
