@@ -1,0 +1,8 @@
+# Decisões
+- Existem dois compose files, um para dev e outro para prod, o que faz com que seja possivel algum developer usar o docker para fazer o seu trabalho. Mesmo estando contenerizado, o ambiente de desenvolvimento possui hot reload. Isto faz com que os developers possam estar num sitema o mais parecido possivel uns com os outros mesmo estando em computadores (e OS's em alguns casos) diferentes.
+- O ambiente de produção dividimos o frontend e a api em dois serviços diferentes, assim são independentes. Com isto também preparamos ambos os projetos para produção.
+- Com a contenerização é possivel ter env vars do docker mesmo estas sendo diferentes para cada ambiente, mas sendo util para centralizar e em caso de haver passwords poder usar secret files para as "esconder".
+- No modulo da api fiz a parte de adicionar, remover e listar os favoritos bem como a persistencia da informação no mongodb, enquanto na parte do frontend está a lógica e a UI da aplicação.
+- Escolhi não mostrar toda a informação de cada linha visto que havia alguns campos, que para um utilizador normal do dia a dia, poderia não ser util e possivelmente mais confuso, deixando assim só os mais informativos para os utilizadores.
+- O botão de favorito muda o icon caso esteja ou não como favorito, enquanto o botão '+' faz mostrar informação mais detalhada da linha.
+- Todo o desenvolvimento do frontend foi feito usando a aplicação dockerizada.
