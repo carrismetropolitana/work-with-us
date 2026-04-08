@@ -44,7 +44,7 @@ yml at the root
 ## Environment Variables
 ### apps/api/.env
 PORT=3001                                   
-MONGODB_URI=mongodb://localhost:27017/cm-app 
+MONGODB_URI=mongodb://root:root@localhost:37001/cm-app?authSource=admin
 
 ### apps/frontend/.env.local
 NEXT_PUBLIC_API_URL=http://localhost:3001
