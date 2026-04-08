@@ -17,3 +17,11 @@ First of all, I'll need to imagine a draft of an app
 
 ![Line's page](1line.png)
 The line page
+
+---
+
+# What do I Need to Do?
+Start the app and check how does it run (first a check of the port and DB, to use after the DB had been created too)
+
+1 -> npm start, install and run dev
+(I-ve written a throw error handling at api index.ts just to make sure everything is okay, even not been setted hahaha)
