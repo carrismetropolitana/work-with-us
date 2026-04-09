@@ -37,4 +37,25 @@ export async function favoritesRoutes(app: FastifyInstance) {
             reply.status(500).send({ message: 'Error creating favorite' })
         }
     })
+
+    // DELETEs
+    // DELETE a favorite
+    app.delete('/favorites/:lineId', async (request, reply) => {
+        const { lineId } = request.params as { lineId: string }
+
+        if (!lineId) {
+            reply.status(400).send({ message: 'lineId is required' })
+        }
+
+        try {
+            const deletedFavorite = await Favorite.findOneAndDelete({ lineId })
+            if (!deletedFavorite) { // Could not find in DB, 404 surely if could connect to DB it will be caught by the catch block
+                reply.status(404).send({ message: 'Favorite not found' })
+            } else {
+                reply.status(204).send({ message: 'Favorite deleted successfully' })
+            }
+        } catch (error) { // Could not connect to DB or other error
+            reply.status(500).send({ message: 'Error deleting favorite' })
+        }
+    })
 }
