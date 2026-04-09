@@ -86,3 +86,4 @@ DELETE One
 use Fastify as this project already uses
 
 need to create the routes dir
+endpoins createds and with data ensurements pretty simple as I've been doing with Flask all my life
