@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify'
-import { Favorite } from '../models/favorite.model'
+import { Favorite } from '../models/favorite.model' // I kwno Lucas it's a bit weird without the '.ts' but it's the way to do it with TypeScript
 
 export async function favoritesRoutes(app: FastifyInstance) {
     // GETs
