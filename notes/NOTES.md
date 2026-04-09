@@ -73,3 +73,16 @@ favorite model
   and both dates need t be setted by me and not the app, to be more secure and cosistently
 
 created apps/api/src/models/favorite.model.ts to ensure the schema for MongoDB and the date setter
+set at the compose.yml a volume for the Mongo's data persinstency :)
+
+## Creating the API
+
+### Favorites
+GET All
+GET One
+POST One
+DELETE One
+
+use Fastify as this project already uses
+
+need to create the routes dir
