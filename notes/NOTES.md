@@ -48,3 +48,16 @@ MONGODB_URI=mongodb://root:root@localhost:37001/cm-app?authSource=admin
 
 ### apps/frontend/.env.local
 NEXT_PUBLIC_API_URL=http://localhost:3001
+
+## Compose the Docker and GO!
+I've pulled the repo to my Linux and ran the docker compose to create the MongoDB
+
+---
+
+## Creating the DB
+
+favorite table shall has: 
+cada um deve ter como propriedades o valor da data de criação em UnixTimestamp e OperationalDate
+and at the Dates object from the tmlmobilidade's utils has these two attributes (node_modules/@tmlmobilidade/utils/dist/src/dates/dates.js)
+
+Now I'll create the db schema
