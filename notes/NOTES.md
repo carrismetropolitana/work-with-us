@@ -61,3 +61,7 @@ cada um deve ter como propriedades o valor da data de criação em UnixTimestamp
 and at the Dates object from the tmlmobilidade's utils has these two attributes (node_modules/@tmlmobilidade/utils/dist/src/dates/dates.js)
 
 Now I'll create the db schema
+api/
+    src/models
+    src/routes
+    src/index.ts
