@@ -30,11 +30,20 @@ const mockLine = {
 }
 
 export default async function Page() {
-	const lines = await Promise.all(getEnrichedLines())
+	const lines = await getEnrichedLines()
 	return (
 		<div style={{ padding: '40px', 'maxWidth': '700px' }}>
 			<h1>Minha Carris Metropolitana</h1>
-			<LineCard line={mockLine} isFavorite={true} onToggleFavorite={(lineId) => console.log('debug: favorite for line:', lineId)} />
+			
+			// List of lines
+			<div style={{
+				display: 'grid',
+			}}> // A map for each line from the enriched lines getter 
+				{lines.map(line => (
+					<LineCard key={line.id} line={line} isFavorite={false} />
+				))}
+			</div>
+
 		</div>
 	)
 }	
