@@ -145,27 +145,4 @@ Now I have to build "lines objects" to be used by the frontend. They will be fro
       if stop_ids.lenght > 0 {for (let i = 0; i < stop_ids.lenght; i++) {stop_names.push(GET all filter(id == id).long_name)}}
     "text_color": "#FFFFFF",
     "tts_name": "Linha 1001 com percurso Alfragide ( Estrada Seminario ) - Reboleira ( - Estaçaão )"
-    "metrics_of_week" --> a 7 columns metric searched at /metrics/demand/by_line/:LINE_ID that returns an array and within it's data array I will filter by the current week to show the qty for each day (public description of this endpoit: Returns the amount of validations, per day, for the specified LINE_ID lines, since 01/01/2024):
-    [
-    {
-        "_id": "697c3b34adb4ae939077ea5f",
-        "description": "Aggregated passengers for the line LINE_ID",
-        "generated_at": "2026-01-30T05:01:40.037Z",
-        "metric": "demand_by_line_by_day",
-        "data": {
-            "2024-01-01": {
-                "day_type": "3",
-                "holiday": "1",
-                "notes": "Dia de Ano Novo",
-                "period": "2",
-                "qty": 14
-              },
-              (...)
-        },
-        "properties": {
-            "line_id": "LINE_ID"
-        }
-    },
-    (...)
-]
-  }
+}
