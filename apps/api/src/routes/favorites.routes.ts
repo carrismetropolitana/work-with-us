@@ -14,7 +14,7 @@ export async function favoritesRoutes(app: FastifyInstance) {
             operationalDate: favorite.operationalDate,
         })) // mapping the favorites to only send the data that I want to send to the app, without the db id and other stuff that I don't want to send
         
-        reply.send(visibleFavorites)
+        return reply.send(visibleFavorites)
     })
     // GET a specific one
     app.get('/favorites/:lineId', async (request, reply) => {
@@ -31,7 +31,7 @@ export async function favoritesRoutes(app: FastifyInstance) {
             createdAtHumanReadable: new Date(favorite.createdAt).toISOString(), // converting the unix timestamp to a human-readable date format
             operationalDate: favorite.operationalDate,
         } 
-        reply.send(visibleFavorite)
+        return reply.send(visibleFavorite)
     })
 
     // POSTs
@@ -40,7 +40,7 @@ export async function favoritesRoutes(app: FastifyInstance) {
         const { lineId } = request.body as { lineId: string }
         
         if (!lineId) {
-            reply.status(400).send({ message: 'lineId is required' })
+            return reply.status(400).send({ message: 'lineId is required' })
         }
 
         try {
@@ -52,7 +52,12 @@ export async function favoritesRoutes(app: FastifyInstance) {
             }) // with the obj in memeory I can send it in ddebugs and other stuff before saving it to the DB
 
             await newFavorite.save()
-            reply.status(201).send(newFavorite)
+            return reply.status(201).send({ message: 'Favorite created successfully', favorite: {
+                lineId: newFavorite.lineId,
+                createdAt: newFavorite.createdAt,
+                createdAtHumanReadable: new Date(newFavorite.createdAt).toISOString(),
+                operationalDate: newFavorite.operationalDate,
+            } })
         } catch (error) {
             console.error('Error creating favorite:', error)
             return reply.status(500).send({ message: `Error creating favorite: ${error.message}` })
@@ -65,18 +70,19 @@ export async function favoritesRoutes(app: FastifyInstance) {
         const { lineId } = request.params as { lineId: string }
 
         if (!lineId) {
-            reply.status(400).send({ message: 'lineId is required' })
+            return reply.status(400).send({ message: 'lineId is required' })
         }
 
         try {
             const deletedFavorite = await Favorite.findOneAndDelete({ lineId })
+            
             if (!deletedFavorite) { // Could not find in DB, 404 surely if could connect to DB it will be caught by the catch block
-                reply.status(404).send({ message: 'Favorite not found' })
-            } else {
-                reply.status(204).send({ message: 'Favorite deleted successfully' })
+                return reply.status(404).send({ message: 'Favorite not found' })
             }
+
+            return reply.status(200).send({ message: 'Favorite deleted successfully' })
         } catch (error) { // Could not connect to DB or other error
-            reply.status(500).send({ message: 'Error deleting favorite' })
+            return reply.status(500).send({ message: 'Error deleting favorite' })
         }
     })
 }
