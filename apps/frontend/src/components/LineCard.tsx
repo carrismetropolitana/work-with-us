@@ -54,6 +54,13 @@ export default function LineCard({ line, isFavorite, onToggleFavorite }: LineCar
                     </div>
                 </div>
             </div>
+
+            {/* More Info/Side bar */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                <div>
+                    ver mais informações
+                </div>
+            </div>
         </div>
     )
 }
