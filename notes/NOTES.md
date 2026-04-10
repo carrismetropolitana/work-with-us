@@ -231,3 +231,6 @@ I have to get an array of lines and call the constructor for aech line in array 
 #### Rebuild do LineCard
 to use more of the tmlmobilidade ui I will use Badge from common
 the lien Id will be inside a Badge
+
+## Favorites
+To switch between buttons I have to filter using state and the react state

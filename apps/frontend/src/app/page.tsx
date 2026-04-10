@@ -1,23 +1,20 @@
-import LineCard from '../components/LineCard'
-import { getEnrichedLines } from '../lib/carris'
+'use client'
 
-const mockLine = {
-	id: '1903',
-	short_name: '1903',
-	long_name: 'Alfragide (Estr Seminario) - Reboleira (Estação)',
-	color: '#1a3fe4',
-	text_color: '#ffffff',
-	route_ids: ['1903_0'],
-	stop_ids: ['030001', '030002'],
-	tts_name: 'Linha 1903',
-	routes: [{ id: '1903_0', line_id: '1903', long_name: 'Rota 1903', tts_name: 'Rota Alfragide' }],
-	stops: [{ id: '030001', long_name: 'Alfragide' }, { id: '030002', long_name: 'Reboleira' }],
+import LineCard from '../components/LineCard'
+import { getEnrichedLines , EnrichedLine } from '../lib/carris'
+import { useState } from 'react'
+import { addFavorite, removeFavorite } from 'TODO' /
+
+// Setting up each content of the page
+interface LinesGridProps {
+  lines: EnrichedLine[]
+  initialFavorites: string[]
 }
 
 export default async function Page() {
 	const lines = await getEnrichedLines()
 	return (
-		<div style={{ padding: '40px', 'maxWidth': '700px' }}>
+		<div style={{ padding: '40px', 'maxWidth': '1000px', margin: '0 auto' }}>
 			<h1>Minha Carris Metropolitana</h1>
 			
 			{/* List of lines */}
@@ -25,7 +22,7 @@ export default async function Page() {
 				display: 'grid',
 				marginTop: '24px',
 				gap: '16px',
-				gridTemplateColumns: 'repeat(auto-fit, minmax(600px, 1fr))'
+				gridTemplateColumns: 'repeat(auto-fill, minmax(600px, 1fr))'
 			}}> { /* A map for each line from the enriched lines getter */ } 
 				{lines.map(line => (
 					<LineCard key={line.id} line={line} isFavorite={false} />
