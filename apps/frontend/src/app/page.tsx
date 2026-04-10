@@ -35,10 +35,13 @@ export default async function Page() {
 		<div style={{ padding: '40px', 'maxWidth': '700px' }}>
 			<h1>Minha Carris Metropolitana</h1>
 			
-			// List of lines
+			{/* List of lines */}
 			<div style={{
 				display: 'grid',
-			}}> // A map for each line from the enriched lines getter 
+				marginTop: '24px',
+				gap: '16px',
+				gridTemplateColumns: 'repeat(auto-fit, minmax(600px, 1fr))'
+			}}> { /* A map for each line from the enriched lines getter */ } 
 				{lines.map(line => (
 					<LineCard key={line.id} line={line} isFavorite={false} />
 				))}
