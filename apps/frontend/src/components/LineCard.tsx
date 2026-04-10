@@ -41,7 +41,15 @@ export default function LineCard({ line, isFavorite, onToggleFavorite }: LineCar
                     <div style={{ flex: 1 }}>
                         <div style={{ color: '#cccccc', fontSize: '13px', marginBottom: '6px', fontWeight: '600' }}>Paradas</div>
                         <div style={{ backgroundColor: '#00BCD4', color: '#fff', padding: '8px 12px', borderRadius: '8px', fontSize: '13px' }}>
-                            {line.stops.map(s => s.long_name).join(', ')}
+                            {line.stops.map(stops => stops.long_name).join(', ')}
+                        </div>
+                    </div>
+                </div>
+                <div style={{ display: 'flex', gap: '16px' }}>
+                    <div style={{ flex: 1 }}>
+                        <div style={{ color: '#cccccc', fontSize: '13px', marginBottom: '6px', fontWeight: '600' }}>Rotas</div>
+                        <div style={{ backgroundColor: '#00BCD4', color: '#fff', padding: '8px 12px', borderRadius: '8px', fontSize: '13px' }}>
+                            {line.routes.map(routes => routes.tts_name).join(', ')}
                         </div>
                     </div>
                 </div>
