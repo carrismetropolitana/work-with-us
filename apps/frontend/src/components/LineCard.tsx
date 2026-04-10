@@ -39,17 +39,39 @@ export default function LineCard({ line, isFavorite, onToggleFavorite }: LineCar
                 {/* Stops & Routes */}
                 <div style={{ display: 'flex', gap: '16px' }}>
                     <div style={{ flex: 1 }}>
-                        <div style={{ color: '#cccccc', fontSize: '13px', marginBottom: '6px', fontWeight: '600' }}>Paradas</div>
-                        <div style={{ backgroundColor: '#00BCD4', color: '#fff', padding: '8px 12px', borderRadius: '8px', fontSize: '13px' }}>
-                            {line.stops.map(stops => stops.long_name).join(', ')}
+                        <div style={{ 
+                            color: '#cccccc',
+                            fontSize: '13px',
+                            marginBottom: '6px',
+                            fontWeight: '600' }}
+                        >Paradas
+                        </div>
+                        <div style={{
+                            backgroundColor: '#02929c',
+                            color: '#fff',
+                            padding: '8px 12px',
+                            fontWeight: 'bold',
+                            borderRadius: '8px',
+                            fontSize: '13px' }}
+                        >{line.stops.map(stops => stops.long_name).join(', ')}
                         </div>
                     </div>
-                </div>
-                <div style={{ display: 'flex', gap: '16px' }}>
                     <div style={{ flex: 1 }}>
-                        <div style={{ color: '#cccccc', fontSize: '13px', marginBottom: '6px', fontWeight: '600' }}>Rotas</div>
-                        <div style={{ backgroundColor: '#00BCD4', color: '#fff', padding: '8px 12px', borderRadius: '8px', fontSize: '13px' }}>
-                            {line.routes.map(routes => routes.tts_name).join(', ')}
+                        <div style={{
+                            color: '#cccccc',
+                            fontSize: '13px',
+                            marginBottom: '6px',
+                            fontWeight: '600' }}
+                        >Rotas
+                        </div>
+                        <div style={{
+                            backgroundColor: '#E91E8C',
+                            color: '#fff',
+                            padding: '8px 12px',
+                            borderRadius: '8px',
+                            fontWeight: 'bold',
+                            fontSize: '13px' }}
+                        >{line.routes.map(routes => routes.tts_name).join(', ')}
                         </div>
                     </div>
                 </div>
