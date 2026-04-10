@@ -87,3 +87,26 @@ use Fastify as this project already uses
 
 need to create the routes dir
 endpoins createds and with data ensurements pretty simple as I've been doing with Flask all my life
+
+### Routes - Implementation Details
+
+created apps/api/src/routes/favorites.route.ts
+
+first tried to set createdAt and operationalDate via a pre('save') hook on the model
+but mongoose validates required fields BEFORE running hooks, so it was failing with
+"Path `createdAt` is required" even though the hook would set it
+moved the Dates.now('Europe/Lisbon') logic directly into the POST handler instead
+lesson learned: hooks run after validation, not before
+
+the visibleFavorite mapping pattern came naturally - didn't want to expose the mongo _id
+and other internal fields to the client, so I map only what matters:
+- lineId
+- createdAt (unix timestamp, useful for future filters)
+- createdAtHumanReadable (ISO string for debugging/display)
+- operationalDate (the TML operational date concept - midnight services belong to previous day)
+
+always return reply.send() - fastify doesn't stop execution on reply, unlike flask's return
+learned this the hard way when delete was sending two responses haha
+
+unix_timestamp from Dates is already in milliseconds, no need to * 1000
+(wasted a few minutes on that one)
