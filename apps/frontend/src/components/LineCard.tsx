@@ -62,21 +62,24 @@ export default function LineCard({ line, isFavorite, onToggleFavorite }: LineCar
                     width: '80px',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',}}>
-
-            </a>
+                    justifyContent: 'center',
+                    textDecoration: 'none',
+                    cursor: 'pointer',
+                }}
+            >
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
                     <div style={{
                         writingMode: 'vertical-rl',
                         transform: 'rotate(180deg)',
                         color: '#333',
                         fontWeight: 'bold',
-                        fontSize: '13px',
+                        fontSize: '18px',
                         textAlign: 'center',
                     }}>
                         ver mais informações
                     </div>
                 </div>
+            </a>
         </div>
     )
 }
