@@ -28,7 +28,7 @@ export default function LineCard({ line, isFavorite, onToggleFavorite }: LineCar
                         {line.id}
                     </span>
                     <button onClick={() => onToggleFavorite(line.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '24px', lineHeight: 1 }}>
-                        {isFavorite ? '❤️' : '🤍'}
+                        {isFavorite ? '❤️' : '🤍'} {/* to change between status */}
                     </button>
                 </div>
             
