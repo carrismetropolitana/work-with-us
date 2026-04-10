@@ -220,3 +220,5 @@ Beta/draft version:
 ![alt text](linebeta.png)
 
 this is a component so I am starting a new dir at the src
+
+to make the side yellow part following to Carris site it has to be a <a> with target blank, vertical alingment e every thing at center and a arrow to right

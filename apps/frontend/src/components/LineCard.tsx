@@ -56,11 +56,27 @@ export default function LineCard({ line, isFavorite, onToggleFavorite }: LineCar
             </div>
 
             {/* More Info/Side bar */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-                <div>
-                    ver mais informações
+            <a href={`https://www.carrismetropolitana.pt/lines/${line.id}`}target="_blank" rel="noopener noreferrer"
+                style={{
+                    backgroundColor: '#F5C400',
+                    width: '80px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',}}>
+
+            </a>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                    <div style={{
+                        writingMode: 'vertical-rl',
+                        transform: 'rotate(180deg)',
+                        color: '#333',
+                        fontWeight: 'bold',
+                        fontSize: '13px',
+                        textAlign: 'center',
+                    }}>
+                        ver mais informações
+                    </div>
                 </div>
-            </div>
         </div>
     )
 }
