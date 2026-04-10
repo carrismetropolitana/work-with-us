@@ -1,18 +1,3 @@
-//'use client';
-
-//import { get } from 'http';
-// import { Button } from '@tmlmobilidade/ui';
-// 
-// export default function Page() {
-// 	return (
-// 		<div>
-// 			<Button label="Click Me" onClick={() => alert('Button Clicked!')} />
-// 			<h1>Welcome to TML Frontend</h1>
-// 		</div>
-// 	);
-// }
-// 
-
 import LineCard from '../components/LineCard'
 import { getEnrichedLines } from '../lib/carris'
 

@@ -227,3 +227,7 @@ to make the side yellow part following to Carris site it has to be a <a> with ta
 I have to get an array of lines and call the constructor for aech line in array and display they at page.tsx
 
 - Import the get for enrichedLines and construct linecards for each row
+
+#### Rebuild do LineCard
+to use more of the tmlmobilidade ui I will use Badge from common
+the lien Id will be inside a Badge

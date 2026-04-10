@@ -1,6 +1,7 @@
 'use client'
 
 import type { EnrichedLine } from '../lib/carris'
+import { Badge } from '@tmlmobilidade/ui' // To be used for the line name
 
 interface LineCardProps {
     line: EnrichedLine
@@ -17,16 +18,9 @@ export default function LineCard({ line, isFavorite, onToggleFavorite }: LineCar
 
                 {/* Firstline/Header */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <span style={{
-                        backgroundColor: line.color,
-                        color: line.text_color,
-                        padding: '6px 14px',
-                        borderRadius: '999px',
-                        fontWeight: 'bold',
-                        fontSize: '16px',
-                    }}>
+                    <Badge type="pill" style={{ backgroundColor: line.color, color: line.text_color, fontWeight: 'bold', fontSize: '16px', padding: '4px 12px' }}>
                         {line.id}
-                    </span>
+                    </Badge>
                     <button onClick={() => onToggleFavorite(line.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '24px', lineHeight: 1 }}>
                         {isFavorite ? '❤️' : '🤍'} {/* to change between status */}
                     </button>
