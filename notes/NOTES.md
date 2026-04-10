@@ -222,3 +222,8 @@ Beta/draft version:
 this is a component so I am starting a new dir at the src
 
 to make the side yellow part following to Carris site it has to be a <a> with target blank, vertical alingment e every thing at center and a arrow to right
+
+### As the card componet is done
+I have to get an array of lines and call the constructor for aech line in array and display they at page.tsx
+
+- Import the get for enrichedLines and construct linecards for each row

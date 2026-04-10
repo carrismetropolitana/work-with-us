@@ -1,5 +1,6 @@
-'use client';
+//'use client';
 
+//import { get } from 'http';
 // import { Button } from '@tmlmobilidade/ui';
 // 
 // export default function Page() {
@@ -13,6 +14,7 @@
 // 
 
 import LineCard from '../components/LineCard'
+import { getEnrichedLines } from '../lib/carris'
 
 const mockLine = {
 	id: '1903',
@@ -27,9 +29,11 @@ const mockLine = {
 	stops: [{ id: '030001', long_name: 'Alfragide' }, { id: '030002', long_name: 'Reboleira' }],
 }
 
-export default function Page() {
+export default async function Page() {
+	const lines = await Promise.all(getEnrichedLines())
 	return (
 		<div style={{ padding: '40px', 'maxWidth': '700px' }}>
+			<h1>Minha Carris Metropolitana</h1>
 			<LineCard line={mockLine} isFavorite={true} onToggleFavorite={(lineId) => console.log('debug: favorite for line:', lineId)} />
 		</div>
 	)
