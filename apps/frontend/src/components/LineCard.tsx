@@ -1,0 +1,101 @@
+'use client'
+
+import type { EnrichedLine } from '../lib/carris'
+import { Badge } from '@tmlmobilidade/ui' // To be used for the line name
+
+interface LineCardProps {
+    line: EnrichedLine
+    isFavorite: boolean
+    onToggleFavorite: (lineId: string) => void
+}
+
+export default function LineCard({ line, isFavorite, onToggleFavorite }: LineCardProps) {
+    return (
+        <div style={{ display: 'flex', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.2)' }}>
+
+            {/* Main card */}
+            <div style={{ flex: 1, backgroundColor: '#4a4a4a', padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+
+                {/* Firstline/Header */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <Badge type="pill" style={{ backgroundColor: line.color, color: line.text_color, fontWeight: 'bold', fontSize: '16px', padding: '4px 12px' }}>
+                        {line.id}
+                    </Badge>
+                    <button onClick={() => onToggleFavorite(line.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '24px', lineHeight: 1 }}>
+                        {isFavorite ? '❤️' : '🤍'} {/* to change between status */}
+                    </button>
+                </div>
+            
+                {/* Line name */}
+                <div style={{ color: '#ffffff', fontSize: '28px', fontWeight: 'bold', lineHeight: 1.2 }}> {/* White to be easier to read, but I did want line.text_color */}
+                    {line.tts_name}
+                </div>
+                {/* Stops & Routes */}
+                <div style={{ display: 'flex', gap: '16px' }}>
+                    <div style={{ flex: 1 }}>
+                        <div style={{ 
+                            color: '#cccccc',
+                            fontSize: '13px',
+                            marginBottom: '6px',
+                            fontWeight: '600' }}
+                        >Paradas
+                        </div>
+                        <div style={{
+                            backgroundColor: '#02929c',
+                            color: '#fff',
+                            padding: '8px 12px',
+                            fontWeight: 'bold',
+                            borderRadius: '8px',
+                            fontSize: '13px' }}
+                        > {line.stopsLabel}
+                        </div>
+                    </div>
+                    <div style={{ flex: 1 }}>
+                        <div style={{
+                            color: '#cccccc',
+                            fontSize: '13px',
+                            marginBottom: '6px',
+                            fontWeight: '600' }}
+                        >Rotas
+                        </div>
+                        <div style={{
+                            backgroundColor: '#E91E8C',
+                            color: '#fff',
+                            padding: '8px 12px',
+                            borderRadius: '8px',
+                            fontWeight: 'bold',
+                            fontSize: '13px' }}
+                        >{line.routesLabel}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* More Info/Side bar */}
+            <a href={`https://www.carrismetropolitana.pt/lines/${line.id}`}target="_blank" rel="noopener noreferrer"
+                style={{
+                    backgroundColor: '#F5C400',
+                    width: '80px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textDecoration: 'none',
+                    cursor: 'pointer',
+                }}
+            >
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                    <div style={{
+                        writingMode: 'vertical-rl',
+                        transform: 'rotate(180deg)',
+                        color: '#333',
+                        fontWeight: 'bold',
+                        fontSize: '18px',
+                        textAlign: 'center',
+                    }}>
+                        ver mais informações
+                    </div>
+                </div>
+            </a>
+        </div>
+    )
+}
