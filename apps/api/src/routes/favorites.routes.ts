@@ -1,5 +1,6 @@
 import { FastifyInstance } from 'fastify'
 import { Favorite } from '../models/favorite.model.js' // I kwno Lucas it's a bit weird without the '.ts' but it's the way to do it with TypeScript
+import { Dates } from '@tmlmobilidade/utils' // The date will be setted by the app not the db anymore
 
 export async function favoritesRoutes(app: FastifyInstance) {
     // GETs
@@ -30,11 +31,18 @@ export async function favoritesRoutes(app: FastifyInstance) {
         }
 
         try {
-            const newFavorite = new Favorite({ lineId })
+            const now = Dates.now("Europe/Lisbon") // from utils to set the favorite data
+            const newFavorite = new Favorite({ 
+                lineId,
+                createdAt: now.unix_timestamp,
+                operationalDate: now.operational_date, 
+            })
+            
             await newFavorite.save()
             reply.status(201).send(newFavorite)
         } catch (error) {
-            reply.status(500).send({ message: 'Error creating favorite' })
+            console.error('Error creating favorite:', error)
+            return reply.status(500).send({ message: `Error creating favorite: ${error.message}` })
         }
     })
 
