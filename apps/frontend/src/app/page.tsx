@@ -30,7 +30,7 @@ const mockLine = {
 export default function Page() {
 	return (
 		<div style={{ padding: '40px', 'maxWidth': '700px' }}>
-			<LineCard line={mockLine} isFavorite={true} onToggleFavorite={(lineId) => console.log('Toggled favorite for line:', lineId)} />
+			<LineCard line={mockLine} isFavorite={true} onToggleFavorite={(lineId) => console.log('debug: favorite for line:', lineId)} />
 		</div>
 	)
 }	
