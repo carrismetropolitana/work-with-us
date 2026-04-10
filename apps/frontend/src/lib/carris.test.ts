@@ -1,16 +1,20 @@
 import { getEnrichedLines } from './carris'
 
-async function testGetEnrichedLines() {
-    try {
-        const lines = await getEnrichedLines()
-        console.log('-------------------------------')
-        console.log(`Total lines: ${lines.length}`)
-        console.log('First line:', JSON.stringify(lines[4], null, 2))
-        console.log('Routes on first line:', lines[4].routes.length)
-        console.log('Stops on first line:', lines[4].stops.length)
-    } catch (error) {
-        console.error('Error fetching Carris lines:', error)
-    }
+async function test() {
+  const lines = await getEnrichedLines()
+  
+  const withStops = lines.filter(l => l.stops.length > 0)
+  const withoutStops = lines.filter(l => l.stops.length === 0)
+
+  console.log(`Total lines: ${lines.length}`)
+  console.log(`With stops: ${withStops.length}`)
+  console.log(`Without stops: ${withoutStops.length}`)
+  
+  //console.log('\nFirst line with stops:')
+  //console.log(JSON.stringify(withStops[0], null, 2))
+  //
+  //console.log('\nFirst line without stops:')
+  //console.log(JSON.stringify(withoutStops[0], null, 2))
 }
 
-testGetEnrichedLines()
+test().catch(console.error)

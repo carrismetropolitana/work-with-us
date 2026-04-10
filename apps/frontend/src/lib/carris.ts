@@ -57,7 +57,7 @@ export async function getEnrichedLines(): Promise<EnrichedLine[]> {
 
     return lines.map(line => ({
         ...line,
-        routes: routes.filter(route => route.line_id === line.id), // Matching routes by line_id -> []
+        routes: routes.filter(route => route.line_id == line.id), // Matching routes by line_id -> []
         stops: stops.filter(stop => stop.lines.includes(line.id)) // Matching stops by checking if the stop id is in the line's stop_ids array -> []
     }))
 }
