@@ -18,14 +18,15 @@ export interface CarrisRoute {
     id: string
     line_id: string
     long_name: string
-    tts_name: string
     color: string
     text_color: string
 }
 
 export interface CarrisStop {
     id: string
-    long_name: string
+    tts_name: string
+    name: string
+    short_name: string
     lat: number
     lon: number
     lines: string[]
@@ -34,6 +35,8 @@ export interface CarrisStop {
 export interface EnrichedLine extends CarrisLine {
     routes: CarrisRoute[]
     stops: CarrisStop[]
+    stopsLabel: string
+    routesLabel: string
 }
 
 export async function getEnrichedLines(): Promise<EnrichedLine[]> {
@@ -56,8 +59,20 @@ export async function getEnrichedLines(): Promise<EnrichedLine[]> {
     ])
 
     return lines.map(line => ({
-        ...line,
-        routes: routes.filter(route => route.line_id == line.id), // Matching routes by line_id -> []
-        stops: stops.filter(stop => stop.lines.includes(line.id)) // Matching stops by checking if the stop id is in the line's stop_ids array -> []
+      ...line,
+      routes: routes.filter(route => route.line_id === line.id),
+      stops: stops.filter(stop => stop.lines.includes(line.id)),
+      stopsLabel: (() => {
+        const filtered = stops.filter(stop => stop.lines.includes(line.id))
+        if (filtered.length === 0 || !filtered[0]?.name) return 'Não Listadas'
+        const names = filtered.slice(0, 2).map(s => s.name).join(', ')
+        return filtered.length > 2 ? `${names}, ...` : names
+      })(),
+      routesLabel: (() => {
+        const filtered = routes.filter(route => route.line_id === line.id)
+        if (filtered.length === 0 || !filtered[0]?.long_name) return 'Não Listadas'
+        const names = filtered.slice(0, 2).map(r => r.long_name).join(', ')
+        return filtered.length > 2 ? `${names}, ...` : names
+      })(),
     }))
 }

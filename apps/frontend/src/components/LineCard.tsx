@@ -53,7 +53,7 @@ export default function LineCard({ line, isFavorite, onToggleFavorite }: LineCar
                             fontWeight: 'bold',
                             borderRadius: '8px',
                             fontSize: '13px' }}
-                        >{line.stops.length < 1 ? 'Não Listadas' : `${line.stops.slice(0, 2).map(s => s.long_name).join(', ')}${line.stops.length > 2 ? ', ...' : ''}`}
+                        > {line.stopsLabel}
                         </div>
                     </div>
                     <div style={{ flex: 1 }}>
@@ -71,7 +71,7 @@ export default function LineCard({ line, isFavorite, onToggleFavorite }: LineCar
                             borderRadius: '8px',
                             fontWeight: 'bold',
                             fontSize: '13px' }}
-                        >{line.routes.length < 1 ? 'Não Listadas' : `${line.routes.slice(0, 2).map(route => route.tts_name).join(', ')}${line.routes.length > 2 ? ', ...' : ''}`}
+                        >{line.routesLabel}
                         </div>
                     </div>
                 </div>
