@@ -218,3 +218,5 @@ export async function getEnrichedLines(): Promise<EnrichedLine[]> {
 Beta/draft version:
 
 ![alt text](linebeta.png)
+
+this is a component so I am starting a new dir at the src
