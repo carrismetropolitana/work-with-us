@@ -30,7 +30,7 @@ export default function LinesGrid({ lines, initialFavorites }: LinesGridProps) {
     return (
         <div>
             {/* Filter buttons */}
-            <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
+            <div style={{ display: 'flex', gap: '12px', marginBottom: '24px', justifyContent: 'center', alignItems: 'center' }}>
                 <Button
                     label="Todas as Linhas"
                     onClick={() => setFilter('all')}
