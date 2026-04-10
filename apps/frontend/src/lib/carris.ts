@@ -28,19 +28,36 @@ export interface CarrisStop {
     long_name: string
     lat: number
     lon: number
+    lines: string[]
 }
 
-export interface ErinchedLine extends CarrisLine {
+export interface EnrichedLine extends CarrisLine {
     routes: CarrisRoute[]
     stops: CarrisStop[]
 }
 
-export async function getCarrisLines(): Promise<CarrisLine[]> {
-    const response = await fetch(`${CARRIS_API}/v2/lines`)
-  
-    if (!response.ok) {
-        throw new Error('Failed to fetch lines')
+export async function getEnrichedLines(): Promise<EnrichedLine[]> {
+    // Storing as promises to run in parallel (faster)
+    const [linesProm, routesProm, stopsProm] = await Promise.all([
+        fetch(`${CARRIS_API}/v2/lines`),
+        fetch(`${CARRIS_API}/routes`),
+        fetch(`${CARRIS_API}/stops`)
+    ])
+    
+    if (!linesProm.ok || !routesProm.ok || !stopsProm.ok) {
+        throw new Error('Failed to fetch lines, routes, or stops')
     }
 
-    return response.json()
+    // Awaiting the JSON parsing after checking the responses to avoid unnecessary parsing if any of the fetches failed
+    const [lines, routes, stops]: [CarrisLine[], CarrisRoute[], CarrisStop[]] = await Promise.all([
+        linesProm.json(),
+        routesProm.json(),
+        stopsProm.json()
+    ])
+
+    return lines.map(line => ({
+        ...line,
+        routes: routes.filter(route => route.line_id === line.id), // Matching routes by line_id -> []
+        stops: stops.filter(stop => stop.lines.includes(line.id)) // Matching stops by checking if the stop id is in the line's stop_ids array -> []
+    }))
 }
