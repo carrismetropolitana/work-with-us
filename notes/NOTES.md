@@ -234,3 +234,9 @@ the lien Id will be inside a Badge
 
 ## Favorites
 To switch between buttons I have to filter using state and the react state
+
+### Creation of Favorite.ts
+An internal script for CRUD the favprotes, but not directly in the db, but using the internal API for this in routes
+
+### Cleaning the main page
+I will create a line-linecards object to be imported at the main page

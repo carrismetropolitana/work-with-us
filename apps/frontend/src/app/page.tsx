@@ -1,9 +1,5 @@
-'use client'
-
 import LineCard from '../components/LineCard'
 import { getEnrichedLines , EnrichedLine } from '../lib/carris'
-import { useState } from 'react'
-import { addFavorite, removeFavorite } from 'TODO' /
 
 // Setting up each content of the page
 interface LinesGridProps {
