@@ -7,7 +7,14 @@ export async function favoritesRoutes(app: FastifyInstance) {
     // GET all favorites
     app.get('/favorites', async (request, reply) => {
         const favorites = await Favorite.find() // find is a built-in method from mongoose to get all favorites from a DB
-        reply.send(favorites)
+        let visibleFavorites = favorites.map(favorite => ({
+            lineId: favorite.lineId,
+            createdAt: favorite.createdAt,
+            createdAtHumanReadable: new Date(favorite.createdAt).toISOString(), // converting the unix timestamp to a human-readable date format
+            operationalDate: favorite.operationalDate,
+        })) // mapping the favorites to only send the data that I want to send to the app, without the db id and other stuff that I don't want to send
+        
+        reply.send(visibleFavorites)
     })
     // GET a specific one
     app.get('/favorites/:lineId', async (request, reply) => {
@@ -21,7 +28,7 @@ export async function favoritesRoutes(app: FastifyInstance) {
         const visibleFavorite = {
             lineId: favorite.lineId, // only this id, without the db id
             createdAt: favorite.createdAt, // the unix timestamp to be used in any future filter/features
-            createdAtHumanReadable: new Date(favorite.createdAt * 1000).toISOString(), // converting the unix timestamp to a human-readable date format
+            createdAtHumanReadable: new Date(favorite.createdAt).toISOString(), // converting the unix timestamp to a human-readable date format
             operationalDate: favorite.operationalDate,
         } 
         reply.send(visibleFavorite)
