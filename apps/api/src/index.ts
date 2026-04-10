@@ -28,7 +28,8 @@ mongoose.connect(process.env.MONGODB_URI)
     console.log('Debug: API routes registered') // Debug log for successful route registration
 
     await app.register(cors, { // Enable the funcction of CRUD by the frontend
-      origin: '*'
+      origin: '*',
+      methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH']
     })
 
     app.listen({ port: Number(process.env.PORT) }, (err) => {
