@@ -6,19 +6,25 @@ export async function favoritesRoutes(app: FastifyInstance) {
     // GETs
     // GET all favorites
     app.get('/favorites', async (request, reply) => {
-        const favorites = await Favorite.find()
+        const favorites = await Favorite.find() // find is a built-in method from mongoose to get all favorites from a DB
         reply.send(favorites)
     })
     // GET a specific one
     app.get('/favorites/:lineId', async (request, reply) => {
         const { lineId } = request.params as { lineId: string }
-        const favorite = await Favorite.findOne({ lineId })
+        const favorite = await Favorite.findOne({ lineId }) // findOne is a built-in method from mongoose to get all favorites from a DB
 
         if (!favorite) {
             reply.status(404).send({ message: 'Favorite not found or do not exist' })
         }
-
-        reply.send(favorite)
+        
+        const visibleFavorite = {
+            lineId: favorite.lineId, // only this id, without the db id
+            createdAt: favorite.createdAt, // the unix timestamp to be used in any future filter/features
+            createdAtHumanReadable: new Date(favorite.createdAt * 1000).toISOString(), // converting the unix timestamp to a human-readable date format
+            operationalDate: favorite.operationalDate,
+        } 
+        reply.send(visibleFavorite)
     })
 
     // POSTs
@@ -36,8 +42,8 @@ export async function favoritesRoutes(app: FastifyInstance) {
                 lineId,
                 createdAt: now.unix_timestamp,
                 operationalDate: now.operational_date, 
-            })
-            
+            }) // with the obj in memeory I can send it in ddebugs and other stuff before saving it to the DB
+
             await newFavorite.save()
             reply.status(201).send(newFavorite)
         } catch (error) {
